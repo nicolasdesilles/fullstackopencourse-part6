@@ -13,7 +13,28 @@ const AnecdoteForm = () => {
     onSuccess: (newAnecdote) => {
       const anecdotes = queryClient.getQueryData(['anecdotes'])
       queryClient.setQueryData(['anecdotes'], anecdotes.concat(newAnecdote))
+      notificationDispatch({
+        type: 'SET',
+        payload: `you added '${newAnecdote.content}'`
+      })
+      setTimeout(
+        () => notificationDispatch({type: 'REMOVE'}),
+        5000
+      )
+    },
+    onError: (err) => {
+      if (err.status === 400) {
+        notificationDispatch({
+          type: 'SET',
+          payload: 'Error: the anecdote should be as least 5 characters long'
+        })
+        setTimeout(
+          () => notificationDispatch({type: 'REMOVE'}),
+          5000
+        )
+      }
     }
+
   })
 
   const onCreate = (event) => {
@@ -24,14 +45,6 @@ const AnecdoteForm = () => {
       content: content,
       votes: 0
     })
-    notificationDispatch({
-      type: 'SET',
-      payload: `you added '${content}'`
-    })
-    setTimeout(
-      () => notificationDispatch({type: 'REMOVE'}),
-      5000
-    )
 }
 
   return (
