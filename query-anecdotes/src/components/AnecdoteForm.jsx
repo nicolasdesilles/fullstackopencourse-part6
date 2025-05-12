@@ -1,9 +1,12 @@
 import { QueryErrorResetBoundary, useMutation, useQueryClient } from '@tanstack/react-query'
 import { createAnecdote } from '../requests'
+import { useNotificationDispatch } from '../NotificationContext'
 
 const AnecdoteForm = () => {
 
   const queryClient = useQueryClient()
+
+  const notificationDispatch = useNotificationDispatch()
 
   const newAnecdoteMutation = useMutation({
     mutationFn: createAnecdote,
@@ -21,6 +24,14 @@ const AnecdoteForm = () => {
       content: content,
       votes: 0
     })
+    notificationDispatch({
+      type: 'SET',
+      payload: `you added '${content}'`
+    })
+    setTimeout(
+      () => notificationDispatch({type: 'REMOVE'}),
+      5000
+    )
 }
 
   return (
