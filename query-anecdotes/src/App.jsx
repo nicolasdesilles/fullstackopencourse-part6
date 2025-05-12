@@ -1,10 +1,8 @@
-
-import { useQuery } from '@tanstack/react-query'
-import { getAnecdotes } from './requests'
+import { useQuery, useMutation } from '@tanstack/react-query'
+import { getAnecdotes, createAnecdote } from './requests'
 
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
-
 
 const App = () => {
 
